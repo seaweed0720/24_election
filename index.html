@@ -1,0 +1,1150 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="data/progress_win_1.js"></script>
+        <script src="data/gaehyeok_win_2.js"></script>
+        <script src="data/same_3.js"></script>
+        <script src="data/ind_win_4.js"></script>
+        <script src="data/gukhim_win_2_5.js"></script>
+        <script src="data/deominju_win2_6.js"></script>
+        <script src="data/new_future_win2_7.js"></script>
+        <script src="data/dokdo_urittang_8.js"></script>
+        <script src="data/simple_layer_22_5_9.js"></script>
+        <script>
+        var map = L.map('map', {
+            doubleClickZoom: false, zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[37.369515399350306,126.34791823713947],[38.05230185709475,127.39849430743182]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        function removeEmptyRowsFromPopupContent(content, feature) {
+         var tempDiv = document.createElement('div');
+         tempDiv.innerHTML = content;
+         var rows = tempDiv.querySelectorAll('tr');
+         for (var i = 0; i < rows.length; i++) {
+             var td = rows[i].querySelector('td.visible-with-data');
+             var key = td ? td.id : '';
+             if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
+                 rows[i].parentNode.removeChild(rows[i]);
+             }
+         }
+         return tempDiv.innerHTML;
+        }
+        document.querySelector(".leaflet-popup-pane").addEventListener("load", function(event) {
+          var tagName = event.target.tagName,
+            popup = map._popup;
+          // Also check if flag is already set.
+          if (tagName === "IMG" && popup && !popup._updated) {
+            popup._updated = true; // Set flag to prevent looping.
+            popup.update();
+          }
+        }, true);
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_GoogleMaps_0');
+        map.getPane('pane_GoogleMaps_0').style.zIndex = 400;
+        var layer_GoogleMaps_0 = L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleMaps_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_GoogleMaps_0;
+        map.addLayer(layer_GoogleMaps_0);
+        function pop_progress_win_1(feature, layer) {
+             var popupContent = '<table align="center">\
+			        <thead color="white"; height="30px"; bgcolor="#34696d"; style="font-size:18px; font-family:맑은 고딕; ">\
+			        <tr align=center>\
+			        <td colspan="2" style="color:white; font-size:25; border-top-right-radius:10px; border-top-left-radius:10px;" >' + (feature.properties['읍면동'] !== null ? autolinker.link(feature.properties['읍면동'].toLocaleString()) : '') + '</td>\
+					</tr>\
+					</thead>\
+					<tbody>\
+                    <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">시도</th>\
+                        <td td align="center">' + (feature.properties['시도'] !== null ? autolinker.link(feature.properties['시도'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">시군구</th>\
+                        <td td align="center">' + (feature.properties['시군구'] !== null ? autolinker.link(feature.properties['시군구'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">선거구</th>\
+                        <td td align="center">' + (feature.properties['선거구'] !== null ? autolinker.link(feature.properties['선거구'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">결과</th>\
+                       <td td align="center">' + (feature.properties['선거??_1'] !== null ? autolinker.link(feature.properties['선거??_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                     <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">1위</th>\
+                        <td td align="center">' + (feature.properties['1위'] !== null ? autolinker.link(feature.properties['1위'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                   <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">2위</th>\
+                        <td td align="center">' + (feature.properties['2위'] !== null ? autolinker.link(feature.properties['2위'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">1위 득표율</th>\
+                        <td td align="center">' + (feature.properties['1위 득??'] !== null ? autolinker.link(feature.properties['1위 득??'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                   <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">2위 득표율</th>\
+                        <td td align="center">' + (feature.properties['2위 득??'] !== null ? autolinker.link(feature.properties['2위 득??'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                     <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">정당</th>\
+                        <td td align="center">' + (feature.properties['승리정?'] !== null ? autolinker.link(feature.properties['승리정?'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                   <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">비고</th>\
+                        <td align="center"; class="visible-with-data" id="비고">' + (feature.properties['비고'] !== null ? autolinker.link(feature.properties['비고'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+					</tbody>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_progress_win_1_0(feature) {
+            if (feature.properties['1위 득??'] >= 0.000000 && feature.properties['1위 득??'] <= 50.000000 ) {
+                return {
+                pane: 'pane_progress_win_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(204,232,244,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['1위 득??'] >= 50.000000 && feature.properties['1위 득??'] <= 60.000000 ) {
+                return {
+                pane: 'pane_progress_win_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(173,221,239,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['1위 득??'] >= 60.000000 && feature.properties['1위 득??'] <= 70.000000 ) {
+                return {
+                pane: 'pane_progress_win_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(142,210,234,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['1위 득??'] >= 70.000000 && feature.properties['1위 득??'] <= 58.128000 ) {
+                return {
+                pane: 'pane_progress_win_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(111,199,228,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['1위 득??'] >= 58.128000 && feature.properties['1위 득??'] <= 60.090000 ) {
+                return {
+                pane: 'pane_progress_win_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(80,188,223,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_progress_win_1');
+        map.getPane('pane_progress_win_1').style.zIndex = 401;
+        map.getPane('pane_progress_win_1').style['mix-blend-mode'] = 'normal';
+        var layer_progress_win_1 = new L.geoJson(json_progress_win_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_progress_win_1',
+            layerName: 'layer_progress_win_1',
+            pane: 'pane_progress_win_1',
+            onEachFeature: pop_progress_win_1,
+            style: style_progress_win_1_0,
+        });
+        bounds_group.addLayer(layer_progress_win_1);
+        map.addLayer(layer_progress_win_1);
+        function pop_gaehyeok_win_2(feature, layer) {
+             var popupContent = '<table align="center">\
+			        <thead color="white"; height="30px"; bgcolor="#34696d"; style="font-size:18px; font-family:맑은 고딕; ">\
+			        <tr align=center>\
+			        <td colspan="2" style="color:white; font-size:25; border-top-right-radius:10px; border-top-left-radius:10px;" >' + (feature.properties['읍면동'] !== null ? autolinker.link(feature.properties['읍면동'].toLocaleString()) : '') + '</td>\
+					</tr>\
+					</thead>\
+					<tbody>\
+                    <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">시도</th>\
+                        <td td align="center">' + (feature.properties['시도'] !== null ? autolinker.link(feature.properties['시도'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">시군구</th>\
+                        <td td align="center">' + (feature.properties['시군구'] !== null ? autolinker.link(feature.properties['시군구'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">선거구</th>\
+                        <td td align="center">' + (feature.properties['선거구'] !== null ? autolinker.link(feature.properties['선거구'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">결과</th>\
+                       <td td align="center">' + (feature.properties['선거??_1'] !== null ? autolinker.link(feature.properties['선거??_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                     <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">1위</th>\
+                        <td td align="center">' + (feature.properties['1위'] !== null ? autolinker.link(feature.properties['1위'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                   <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">2위</th>\
+                        <td td align="center">' + (feature.properties['2위'] !== null ? autolinker.link(feature.properties['2위'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">1위 득표율</th>\
+                        <td td align="center">' + (feature.properties['1위 득??'] !== null ? autolinker.link(feature.properties['1위 득??'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                   <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">2위 득표율</th>\
+                        <td td align="center">' + (feature.properties['2위 득??'] !== null ? autolinker.link(feature.properties['2위 득??'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                     <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">정당</th>\
+                        <td td align="center">' + (feature.properties['승리정?'] !== null ? autolinker.link(feature.properties['승리정?'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                   <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">비고</th>\
+                        <td align="center"; class="visible-with-data" id="비고">' + (feature.properties['비고'] !== null ? autolinker.link(feature.properties['비고'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+					</tbody>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_gaehyeok_win_2_0(feature) {
+            if (feature.properties['1위 득??'] >= 42.010000 && feature.properties['1위 득??'] <= 50.000000 ) {
+                return {
+                pane: 'pane_gaehyeok_win_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(255,192,137,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['1위 득??'] >= 50.000000 && feature.properties['1위 득??'] <= 60.000000 ) {
+                return {
+                pane: 'pane_gaehyeok_win_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(250,172,103,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['1위 득??'] >= 60.000000 && feature.properties['1위 득??'] <= 44.860000 ) {
+                return {
+                pane: 'pane_gaehyeok_win_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(246,151,69,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['1위 득??'] >= 44.860000 && feature.properties['1위 득??'] <= 45.270000 ) {
+                return {
+                pane: 'pane_gaehyeok_win_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(241,131,34,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['1위 득??'] >= 45.270000 && feature.properties['1위 득??'] <= 42.010000 ) {
+                return {
+                pane: 'pane_gaehyeok_win_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(236,110,0,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_gaehyeok_win_2');
+        map.getPane('pane_gaehyeok_win_2').style.zIndex = 402;
+        map.getPane('pane_gaehyeok_win_2').style['mix-blend-mode'] = 'normal';
+        var layer_gaehyeok_win_2 = new L.geoJson(json_gaehyeok_win_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_gaehyeok_win_2',
+            layerName: 'layer_gaehyeok_win_2',
+            pane: 'pane_gaehyeok_win_2',
+            onEachFeature: pop_gaehyeok_win_2,
+            style: style_gaehyeok_win_2_0,
+        });
+        bounds_group.addLayer(layer_gaehyeok_win_2);
+        map.addLayer(layer_gaehyeok_win_2);
+        function pop_same_3(feature, layer) {
+             var popupContent = '<table align="center">\
+			        <thead color="white"; height="30px"; bgcolor="#34696d"; style="font-size:18px; font-family:맑은 고딕; ">\
+			        <tr align=center>\
+			        <td colspan="2" style="color:white; font-size:25; border-top-right-radius:10px; border-top-left-radius:10px;" >' + (feature.properties['읍면동'] !== null ? autolinker.link(feature.properties['읍면동'].toLocaleString()) : '') + '</td>\
+					</tr>\
+					</thead>\
+					<tbody>\
+                    <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">시도</th>\
+                        <td td align="center">' + (feature.properties['시도'] !== null ? autolinker.link(feature.properties['시도'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">시군구</th>\
+                        <td td align="center">' + (feature.properties['시군구'] !== null ? autolinker.link(feature.properties['시군구'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">선거구</th>\
+                        <td td align="center">' + (feature.properties['선거구'] !== null ? autolinker.link(feature.properties['선거구'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">결과</th>\
+                       <td td align="center">' + (feature.properties['선거??_1'] !== null ? autolinker.link(feature.properties['선거??_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                     <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">1위</th>\
+                        <td td align="center">' + (feature.properties['1위'] !== null ? autolinker.link(feature.properties['1위'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                   <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">2위</th>\
+                        <td td align="center">' + (feature.properties['2위'] !== null ? autolinker.link(feature.properties['2위'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">1위 득표율</th>\
+                        <td td align="center">' + (feature.properties['1위 득??'] !== null ? autolinker.link(feature.properties['1위 득??'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                   <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">2위 득표율</th>\
+                        <td td align="center">' + (feature.properties['2위 득??'] !== null ? autolinker.link(feature.properties['2위 득??'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                     <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">정당</th>\
+                        <td td align="center">' + (feature.properties['승리정?'] !== null ? autolinker.link(feature.properties['승리정?'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                   <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">비고</th>\
+                        <td align="center"; class="visible-with-data" id="비고">' + (feature.properties['비고'] !== null ? autolinker.link(feature.properties['비고'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+					</tbody>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_same_3_0() {
+            return {
+                pane: 'pane_same_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(251,197,255,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_same_3');
+        map.getPane('pane_same_3').style.zIndex = 403;
+        map.getPane('pane_same_3').style['mix-blend-mode'] = 'normal';
+        var layer_same_3 = new L.geoJson(json_same_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_same_3',
+            layerName: 'layer_same_3',
+            pane: 'pane_same_3',
+            onEachFeature: pop_same_3,
+            style: style_same_3_0,
+        });
+        bounds_group.addLayer(layer_same_3);
+        map.addLayer(layer_same_3);
+        function pop_ind_win_4(feature, layer) {
+            var popupContent = '<table align="center">\
+			        <thead color="white"; height="30px"; bgcolor="#34696d"; style="font-size:18px; font-family:맑은 고딕; ">\
+			        <tr align=center>\
+			        <td colspan="2" style="color:white; font-size:25; border-top-right-radius:10px; border-top-left-radius:10px;" >' + (feature.properties['읍면동'] !== null ? autolinker.link(feature.properties['읍면동'].toLocaleString()) : '') + '</td>\
+					</tr>\
+					</thead>\
+					<tbody>\
+                    <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">시도</th>\
+                        <td td align="center">' + (feature.properties['시도'] !== null ? autolinker.link(feature.properties['시도'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">시군구</th>\
+                        <td td align="center">' + (feature.properties['시군구'] !== null ? autolinker.link(feature.properties['시군구'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">선거구</th>\
+                        <td td align="center">' + (feature.properties['선거구'] !== null ? autolinker.link(feature.properties['선거구'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">결과</th>\
+                       <td td align="center">' + (feature.properties['선거??_1'] !== null ? autolinker.link(feature.properties['선거??_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                     <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">1위</th>\
+                        <td td align="center">' + (feature.properties['1위'] !== null ? autolinker.link(feature.properties['1위'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                   <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">2위</th>\
+                        <td td align="center">' + (feature.properties['2위'] !== null ? autolinker.link(feature.properties['2위'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">1위 득표율</th>\
+                        <td td align="center">' + (feature.properties['1위 득??'] !== null ? autolinker.link(feature.properties['1위 득??'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                   <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">2위 득표율</th>\
+                        <td td align="center">' + (feature.properties['2위 득??'] !== null ? autolinker.link(feature.properties['2위 득??'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                     <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">정당</th>\
+                        <td td align="center">' + (feature.properties['승리정?'] !== null ? autolinker.link(feature.properties['승리정?'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                   <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">비고</th>\
+                        <td align="center"; class="visible-with-data" id="비고">' + (feature.properties['비고'] !== null ? autolinker.link(feature.properties['비고'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+					</tbody>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_ind_win_4_0(feature) {
+            if (feature.properties['1위 득??'] >= 43.770000 && feature.properties['1위 득??'] <= 50.000000 ) {
+                return {
+                pane: 'pane_ind_win_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(190,190,190,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['1위 득??'] >= 50.000000 && feature.properties['1위 득??'] <= 60.000000 ) {
+                return {
+                pane: 'pane_ind_win_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(163,163,163,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['1위 득??'] >= 60.000000 && feature.properties['1위 득??'] <= 49.660000 ) {
+                return {
+                pane: 'pane_ind_win_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(135,135,135,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['1위 득??'] >= 49.660000 && feature.properties['1위 득??'] <= 55.540000 ) {
+                return {
+                pane: 'pane_ind_win_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(108,108,108,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['1위 득??'] >= 55.540000 && feature.properties['1위 득??'] <= 59.730000 ) {
+                return {
+                pane: 'pane_ind_win_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(80,80,80,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_ind_win_4');
+        map.getPane('pane_ind_win_4').style.zIndex = 404;
+        map.getPane('pane_ind_win_4').style['mix-blend-mode'] = 'normal';
+        var layer_ind_win_4 = new L.geoJson(json_ind_win_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_ind_win_4',
+            layerName: 'layer_ind_win_4',
+            pane: 'pane_ind_win_4',
+            onEachFeature: pop_ind_win_4,
+            style: style_ind_win_4_0,
+        });
+        bounds_group.addLayer(layer_ind_win_4);
+        map.addLayer(layer_ind_win_4);
+        function pop_gukhim_win_2_5(feature, layer) {
+             var popupContent = '<table align="center">\
+			        <thead color="white"; height="30px"; bgcolor="#34696d"; style="font-size:18px; font-family:맑은 고딕; ">\
+			        <tr align=center>\
+			        <td colspan="2" style="color:white; font-size:25; border-top-right-radius:10px; border-top-left-radius:10px;" >' + (feature.properties['읍면동'] !== null ? autolinker.link(feature.properties['읍면동'].toLocaleString()) : '') + '</td>\
+					</tr>\
+					</thead>\
+					<tbody>\
+                    <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">시도</th>\
+                        <td td align="center">' + (feature.properties['시도'] !== null ? autolinker.link(feature.properties['시도'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">시군구</th>\
+                        <td td align="center">' + (feature.properties['시군구'] !== null ? autolinker.link(feature.properties['시군구'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">선거구</th>\
+                        <td td align="center">' + (feature.properties['선거구'] !== null ? autolinker.link(feature.properties['선거구'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">결과</th>\
+                       <td td align="center">' + (feature.properties['선거??_1'] !== null ? autolinker.link(feature.properties['선거??_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                     <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">1위</th>\
+                        <td td align="center">' + (feature.properties['1위'] !== null ? autolinker.link(feature.properties['1위'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                   <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">2위</th>\
+                        <td td align="center">' + (feature.properties['2위'] !== null ? autolinker.link(feature.properties['2위'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">1위 득표율</th>\
+                        <td td align="center">' + (feature.properties['1위 득??'] !== null ? autolinker.link(feature.properties['1위 득??'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                   <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">2위 득표율</th>\
+                        <td td align="center">' + (feature.properties['2위 득??'] !== null ? autolinker.link(feature.properties['2위 득??'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                     <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">정당</th>\
+                        <td td align="center">' + (feature.properties['승리정?'] !== null ? autolinker.link(feature.properties['승리정?'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                   <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">비고</th>\
+                        <td align="center"; class="visible-with-data" id="비고">' + (feature.properties['비고'] !== null ? autolinker.link(feature.properties['비고'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+					</tbody>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_gukhim_win_2_5_0(feature) {
+            if (feature.properties['1위 득??'] >= 40.500000 && feature.properties['1위 득??'] <= 50.000000 ) {
+                return {
+                pane: 'pane_gukhim_win_2_5',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(255,134,148,0.9725490196078431)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['1위 득??'] >= 50.000000 && feature.properties['1위 득??'] <= 60.000000 ) {
+                return {
+                pane: 'pane_gukhim_win_2_5',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(232,101,111,0.9803921568627451)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['1위 득??'] >= 60.000000 && feature.properties['1위 득??'] <= 70.000000 ) {
+                return {
+                pane: 'pane_gukhim_win_2_5',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(210,67,74,0.9882352941176471)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['1위 득??'] >= 70.000000 && feature.properties['1위 득??'] <= 80.000000 ) {
+                return {
+                pane: 'pane_gukhim_win_2_5',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(187,33,37,0.9921568627450981)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['1위 득??'] >= 80.000000 && feature.properties['1위 득??'] <= 90.990000 ) {
+                return {
+                pane: 'pane_gukhim_win_2_5',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(164,0,0,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_gukhim_win_2_5');
+        map.getPane('pane_gukhim_win_2_5').style.zIndex = 405;
+        map.getPane('pane_gukhim_win_2_5').style['mix-blend-mode'] = 'normal';
+        var layer_gukhim_win_2_5 = new L.geoJson(json_gukhim_win_2_5, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_gukhim_win_2_5',
+            layerName: 'layer_gukhim_win_2_5',
+            pane: 'pane_gukhim_win_2_5',
+            onEachFeature: pop_gukhim_win_2_5,
+            style: style_gukhim_win_2_5_0,
+        });
+        bounds_group.addLayer(layer_gukhim_win_2_5);
+        map.addLayer(layer_gukhim_win_2_5);
+        function pop_deominju_win2_6(feature, layer) {
+             var popupContent = '<table align="center">\
+			        <thead color="white"; height="30px"; bgcolor="#34696d"; style="font-size:18px; font-family:맑은 고딕; ">\
+			        <tr align=center>\
+			        <td colspan="2" style="color:white; font-size:25; border-top-right-radius:10px; border-top-left-radius:10px;" >' + (feature.properties['읍면동'] !== null ? autolinker.link(feature.properties['읍면동'].toLocaleString()) : '') + '</td>\
+					</tr>\
+					</thead>\
+					<tbody>\
+                    <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">시도</th>\
+                        <td td align="center">' + (feature.properties['시도'] !== null ? autolinker.link(feature.properties['시도'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">시군구</th>\
+                        <td td align="center">' + (feature.properties['시군구'] !== null ? autolinker.link(feature.properties['시군구'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">선거구</th>\
+                        <td td align="center">' + (feature.properties['선거구'] !== null ? autolinker.link(feature.properties['선거구'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">결과</th>\
+                       <td td align="center">' + (feature.properties['선거??_1'] !== null ? autolinker.link(feature.properties['선거??_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                     <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">1위</th>\
+                        <td td align="center">' + (feature.properties['1위'] !== null ? autolinker.link(feature.properties['1위'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                   <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">2위</th>\
+                        <td td align="center">' + (feature.properties['2위'] !== null ? autolinker.link(feature.properties['2위'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">1위 득표율</th>\
+                        <td td align="center">' + (feature.properties['1위 득??'] !== null ? autolinker.link(feature.properties['1위 득??'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                   <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">2위 득표율</th>\
+                        <td td align="center">' + (feature.properties['2위 득??'] !== null ? autolinker.link(feature.properties['2위 득??'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                     <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">정당</th>\
+                        <td td align="center">' + (feature.properties['승리정?'] !== null ? autolinker.link(feature.properties['승리정?'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                   <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">비고</th>\
+                        <td align="center"; class="visible-with-data" id="비고">' + (feature.properties['비고'] !== null ? autolinker.link(feature.properties['비고'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+					</tbody>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_deominju_win2_6_0(feature) {
+            if (feature.properties['1위 득??'] >= 30.930000 && feature.properties['1위 득??'] <= 50.000000 ) {
+                return {
+                pane: 'pane_deominju_win2_6',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(152,187,235,0.9725490196078431)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['1위 득??'] >= 50.000000 && feature.properties['1위 득??'] <= 60.000000 ) {
+                return {
+                pane: 'pane_deominju_win2_6',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(114,157,206,0.9803921568627451)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['1위 득??'] >= 60.000000 && feature.properties['1위 득??'] <= 70.000000 ) {
+                return {
+                pane: 'pane_deominju_win2_6',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(76,128,177,0.9882352941176471)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['1위 득??'] >= 70.000000 && feature.properties['1위 득??'] <= 80.000000 ) {
+                return {
+                pane: 'pane_deominju_win2_6',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(38,98,147,0.9921568627450981)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['1위 득??'] >= 80.000000 && feature.properties['1위 득??'] <= 96.280000 ) {
+                return {
+                pane: 'pane_deominju_win2_6',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(0,69,118,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_deominju_win2_6');
+        map.getPane('pane_deominju_win2_6').style.zIndex = 406;
+        map.getPane('pane_deominju_win2_6').style['mix-blend-mode'] = 'normal';
+        var layer_deominju_win2_6 = new L.geoJson(json_deominju_win2_6, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_deominju_win2_6',
+            layerName: 'layer_deominju_win2_6',
+            pane: 'pane_deominju_win2_6',
+            onEachFeature: pop_deominju_win2_6,
+            style: style_deominju_win2_6_0,
+        });
+        bounds_group.addLayer(layer_deominju_win2_6);
+        map.addLayer(layer_deominju_win2_6);
+        function pop_new_future_win2_7(feature, layer) {
+             var popupContent = '<table align="center">\
+			        <thead color="white"; height="30px"; bgcolor="#34696d"; style="font-size:18px; font-family:맑은 고딕; ">\
+			        <tr align=center>\
+			        <td colspan="2" style="color:white; font-size:25; border-top-right-radius:10px; border-top-left-radius:10px;" >' + (feature.properties['읍면동'] !== null ? autolinker.link(feature.properties['읍면동'].toLocaleString()) : '') + '</td>\
+					</tr>\
+					</thead>\
+					<tbody>\
+                    <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">시도</th>\
+                        <td td align="center">' + (feature.properties['시도'] !== null ? autolinker.link(feature.properties['시도'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">시군구</th>\
+                        <td td align="center">' + (feature.properties['시군구'] !== null ? autolinker.link(feature.properties['시군구'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">선거구</th>\
+                        <td td align="center">' + (feature.properties['선거구'] !== null ? autolinker.link(feature.properties['선거구'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">결과</th>\
+                       <td td align="center">' + (feature.properties['선거??_1'] !== null ? autolinker.link(feature.properties['선거??_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                     <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">1위</th>\
+                        <td td align="center">' + (feature.properties['1위'] !== null ? autolinker.link(feature.properties['1위'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                   <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">2위</th>\
+                        <td td align="center">' + (feature.properties['2위'] !== null ? autolinker.link(feature.properties['2위'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">1위 득표율</th>\
+                        <td td align="center">' + (feature.properties['1위 득??'] !== null ? autolinker.link(feature.properties['1위 득??'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                   <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">2위 득표율</th>\
+                        <td td align="center">' + (feature.properties['2위 득??'] !== null ? autolinker.link(feature.properties['2위 득??'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                     <tr bgcolor="#eee8d5" border-color="inherit";>\
+                        <th scope="row">정당</th>\
+                        <td td align="center">' + (feature.properties['승리정?'] !== null ? autolinker.link(feature.properties['승리정?'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                   <tr  bgcolor="#fdf6e3">\
+                        <th scope="row">비고</th>\
+                        <td align="center"; class="visible-with-data" id="비고">' + (feature.properties['비고'] !== null ? autolinker.link(feature.properties['비고'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+					</tbody>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_new_future_win2_7_0(feature) {
+            if (feature.properties['1위 득??'] >= 0.000000 && feature.properties['1위 득??'] <= 50.000000 ) {
+                return {
+                pane: 'pane_new_future_win2_7',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(133,255,253,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['1위 득??'] >= 50.000000 && feature.properties['1위 득??'] <= 60.000000 ) {
+                return {
+                pane: 'pane_new_future_win2_7',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(100,232,231,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['1위 득??'] >= 60.000000 && feature.properties['1위 득??'] <= 70.000000 ) {
+                return {
+                pane: 'pane_new_future_win2_7',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(67,209,210,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['1위 득??'] >= 70.000000 && feature.properties['1위 득??'] <= 59.850000 ) {
+                return {
+                pane: 'pane_new_future_win2_7',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(33,186,188,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['1위 득??'] >= 59.850000 && feature.properties['1위 득??'] <= 61.180000 ) {
+                return {
+                pane: 'pane_new_future_win2_7',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 0.8,
+                fillColor: 'rgba(0,163,166,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_new_future_win2_7');
+        map.getPane('pane_new_future_win2_7').style.zIndex = 407;
+        map.getPane('pane_new_future_win2_7').style['mix-blend-mode'] = 'normal';
+        var layer_new_future_win2_7 = new L.geoJson(json_new_future_win2_7, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_new_future_win2_7',
+            layerName: 'layer_new_future_win2_7',
+            pane: 'pane_new_future_win2_7',
+            onEachFeature: pop_new_future_win2_7,
+            style: style_new_future_win2_7_0,
+        });
+        bounds_group.addLayer(layer_new_future_win2_7);
+        map.addLayer(layer_new_future_win2_7);
+        function pop_dokdo_urittang_8(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['OBJECTID'] !== null ? autolinker.link(feature.properties['OBJECTID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">동해</th>\
+                        <td>' + (feature.properties['동해'] !== null ? autolinker.link(feature.properties['동해'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_dokdo_urittang_8_0() {
+            return {
+                pane: 'pane_dokdo_urittang_8',
+                opacity: 1,
+                color: 'rgba(126,214,234,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(126,214,234,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_dokdo_urittang_8');
+        map.getPane('pane_dokdo_urittang_8').style.zIndex = 408;
+        map.getPane('pane_dokdo_urittang_8').style['mix-blend-mode'] = 'normal';
+        var layer_dokdo_urittang_8 = new L.geoJson(json_dokdo_urittang_8, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_dokdo_urittang_8',
+            layerName: 'layer_dokdo_urittang_8',
+            pane: 'pane_dokdo_urittang_8',
+            onEachFeature: pop_dokdo_urittang_8,
+            style: style_dokdo_urittang_8_0,
+        });
+        bounds_group.addLayer(layer_dokdo_urittang_8);
+        map.addLayer(layer_dokdo_urittang_8);
+        function pop_simple_layer_22_5_9(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['adm_dr_nm'] !== null ? autolinker.link(feature.properties['adm_dr_nm'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+            var popup = layer.getPopup();
+            var content = popup.getContent();
+            var updatedContent = removeEmptyRowsFromPopupContent(content, feature);
+            popup.setContent(updatedContent);
+        }
+
+        function style_simple_layer_22_5_9_0() {
+            return {
+                pane: 'pane_simple_layer_22_5_9',
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 3.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_simple_layer_22_5_9');
+        map.getPane('pane_simple_layer_22_5_9').style.zIndex = 409;
+        map.getPane('pane_simple_layer_22_5_9').style['mix-blend-mode'] = 'normal';
+        var layer_simple_layer_22_5_9 = new L.geoJson(json_simple_layer_22_5_9, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_simple_layer_22_5_9',
+            layerName: 'layer_simple_layer_22_5_9',
+            pane: 'pane_simple_layer_22_5_9',
+            onEachFeature: pop_simple_layer_22_5_9,
+            style: style_simple_layer_22_5_9_0,
+        });
+        bounds_group.addLayer(layer_simple_layer_22_5_9);
+        map.addLayer(layer_simple_layer_22_5_9);
+        setBounds();
+        </script>
+    </body>
+</html>
